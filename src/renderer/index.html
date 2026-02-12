@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Screengrabby</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <p class="eyebrow">Night Capture Suite</p>
+        <h1>Screengrabby</h1>
+        <p class="subtitle">High-fidelity website screenshots with precise control and repeatable output.</p>
+      </header>
+
+      <form id="capture-form">
+        <section class="panel">
+          <h2>Core Capture</h2>
+
+          <div class="profile-group">
+            <span class="field-title">Profile</span>
+            <div class="profile-buttons" id="profile-buttons">
+              <button type="button" class="profile-btn" data-profile="fast">Fast</button>
+              <button type="button" class="profile-btn" data-profile="balanced">Balanced</button>
+              <button type="button" class="profile-btn" data-profile="ultra">Ultra</button>
+            </div>
+          </div>
+
+          <div class="grid two">
+            <label class="field">
+              <span class="field-title">Capture mode</span>
+              <select id="capture-type">
+                <option value="single">Single URL</option>
+                <option value="queue">Queue URLs</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-title">File type</span>
+              <select id="format">
+                <option value="jpg">JPG</option>
+                <option value="webp">WebP</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="field" id="single-url-field">
+            <span class="field-title">URL</span>
+            <input id="url" type="text" required placeholder="https://example.com" />
+            <span id="error-url" class="field-error"></span>
+          </label>
+
+          <label class="field hidden" id="queue-url-field">
+            <span class="field-title">URL queue (one per line)</span>
+            <textarea id="url-list" rows="5" placeholder="https://example.com\nhttps://example.org/pricing"></textarea>
+            <span id="error-urlList" class="field-error"></span>
+          </label>
+
+          <div class="grid two">
+            <label class="field">
+              <span class="field-title">Width preset</span>
+              <select id="preset"></select>
+            </label>
+            <label class="field">
+              <span class="field-title">Width (px)</span>
+              <input id="width" type="number" min="320" value="1280" required />
+              <span id="error-width" class="field-error"></span>
+            </label>
+          </div>
+
+          <div class="grid two">
+            <label class="field">
+              <span class="field-title">Capture viewport</span>
+              <select id="mode">
+                <option value="fold">Above the fold</option>
+                <option value="full">Full page</option>
+              </select>
+            </label>
+            <label class="field">
+              <span class="field-title">Height (px)</span>
+              <input id="height" type="number" min="320" value="900" required />
+              <span id="height-help" class="field-help">Used for above-the-fold captures.</span>
+              <span id="error-height" class="field-error"></span>
+            </label>
+          </div>
+
+          <label id="multi-size-toggle-row" class="checkbox-row field">
+            <input id="multi-size-enabled" type="checkbox" />
+            Multi-size capture (apply selected sizes)
+          </label>
+          <div id="multi-size-options" class="multi-size-options hidden">
+            <span class="field-title">Target sizes</span>
+            <div class="multi-size-grid">
+              <label><input type="checkbox" class="multi-size-preset" value="1" /> MacBook 13 (1280x800)</label>
+              <label><input type="checkbox" class="multi-size-preset" value="2" /> MacBook 14 (1512x900)</label>
+              <label><input type="checkbox" class="multi-size-preset" value="3" /> Laptop common (1366x800)</label>
+              <label><input type="checkbox" class="multi-size-preset" value="4" /> Desktop (1920x1080)</label>
+              <label><input type="checkbox" class="multi-size-preset" value="5" /> Social portrait (1080x1350)</label>
+            </div>
+            <span id="error-multiSize" class="field-error"></span>
+          </div>
+
+          <label class="field">
+            <span class="field-title">Output folder</span>
+            <div class="folder-picker">
+              <button id="choose-folder" type="button">Choose folder</button>
+              <span id="folder-path">No folder selected</span>
+            </div>
+            <span id="error-outputDir" class="field-error"></span>
+          </label>
+
+          <button id="capture" type="submit">Capture Screenshot</button>
+          <div id="capture-feedback" class="capture-feedback" aria-live="polite">
+            <div id="capture-spinner" class="capture-spinner" aria-hidden="true"></div>
+            <div id="capture-progress-track" class="capture-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+              <div id="capture-progress-fill" class="capture-progress-fill"></div>
+            </div>
+            <span id="capture-feedback-text">Preparing capture...</span>
+          </div>
+        </section>
+
+        <details class="panel advanced" id="advanced-panel">
+          <summary>Advanced Settings</summary>
+          <div class="advanced-content">
+            <div class="grid three">
+              <label class="field">
+                <span class="field-title">Scale</span>
+                <select id="scale">
+                  <option value="1">1x</option>
+                  <option value="2" selected>2x</option>
+                  <option value="3">3x</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field-title">Quality <span id="quality-value">90</span></span>
+                <input id="quality" type="range" min="60" max="100" step="1" value="90" />
+              </label>
+              <label class="checkbox-row field field-checkbox">
+                <input id="append-timestamp" type="checkbox" />
+                Append timestamp to filename
+              </label>
+            </div>
+
+            <div class="grid three">
+              <label class="field">
+                <span class="field-title">Wait strategy</span>
+                <select id="wait-until">
+                  <option value="networkidle">networkidle</option>
+                  <option value="domcontentloaded" selected>domcontentloaded</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="field-title">Timeout (ms)</span>
+                <input id="timeout" type="number" min="1000" step="1000" value="30000" />
+                <span id="error-timeout" class="field-error"></span>
+              </label>
+              <label class="field">
+                <span class="field-title">Additional delay (ms)</span>
+                <input id="delay" type="number" min="0" step="100" value="0" />
+              </label>
+            </div>
+
+            <div class="grid two">
+              <label class="field">
+                <span class="field-title">Queue concurrency</span>
+                <select id="queue-concurrency">
+                  <option value="1">1 worker</option>
+                  <option value="2" selected>2 workers</option>
+                  <option value="3">3 workers</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="grid two">
+              <label class="checkbox-row field">
+                <input id="consistency-mode" type="checkbox" />
+                Consistency mode (hide sticky/fixed UI, pause media, reduce motion)
+              </label>
+              <label class="field">
+                <span class="field-title">Consistency delay preset</span>
+                <select id="consistency-delay-ms">
+                  <option value="0">None</option>
+                  <option value="300">Quick (300ms)</option>
+                  <option value="800" selected>Stable (800ms)</option>
+                  <option value="1500">Strict (1500ms)</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="grid two">
+              <label class="field">
+                <span class="field-title">Cookie handling</span>
+                <select id="cookie-handling">
+                  <option value="hide" selected>Hide common banners</option>
+                  <option value="accept">Try accept then hide</option>
+                  <option value="off">Off</option>
+                </select>
+              </label>
+              <label class="checkbox-row field">
+                <input id="suppress-animations" type="checkbox" checked />
+                Suppress animations and transitions
+              </label>
+            </div>
+
+            <label class="field">
+              <span class="field-title">Extra cookie selectors (optional)</span>
+              <textarea id="cookie-selectors" rows="3" placeholder=".cookie-banner\n#consent-modal"></textarea>
+            </label>
+          </div>
+        </details>
+      </form>
+
+      <section class="status">
+        <h2>Status</h2>
+        <pre id="status-text">Ready.</pre>
+        <div class="status-actions">
+          <button id="open-output-folder" type="button">Open Output Folder</button>
+          <button id="reveal-last-file" type="button" disabled>Reveal Last Capture</button>
+        </div>
+      </section>
+
+      <section id="queue-results" class="preview hidden">
+        <h2>Queue Thumbnails</h2>
+        <p id="queue-results-empty" class="preview-empty">Run a queue capture to see thumbnails here.</p>
+        <div id="queue-results-grid" class="queue-results-grid"></div>
+      </section>
+
+      <section class="preview">
+        <h2>Preview</h2>
+        <p id="preview-empty" class="preview-empty">No capture yet.</p>
+        <img id="preview-image" alt="Captured webpage preview" />
+      </section>
+    </main>
+
+    <script src="./renderer.js"></script>
+  </body>
+</html>

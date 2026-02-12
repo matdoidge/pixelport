@@ -1,0 +1,40 @@
+{
+  "name": "screengrabby",
+  "version": "0.1.0",
+  "description": "macOS desktop app for deterministic high-resolution webpage screenshots",
+  "main": "src/main/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test",
+    "pack:mac": "electron-builder --mac dir",
+    "dist:mac": "electron-builder --mac dmg"
+  },
+  "dependencies": {
+    "electron": "^34.2.0",
+    "playwright": "^1.52.0",
+    "sharp": "^0.34.2"
+  },
+  "devDependencies": {
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.screengrabby.app",
+    "productName": "Screengrabby",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "package.json",
+      "README.md"
+    ],
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.graphics-design",
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    }
+  }
+}
