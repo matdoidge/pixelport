@@ -7,11 +7,21 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div class="window-titlebar" aria-hidden="true">
+      <span class="window-title">PixelPort</span>
+      <span class="window-title-tag">Capture Studio</span>
+    </div>
+
     <main class="app">
       <header class="hero">
-        <p class="eyebrow">Night Capture Suite</p>
-        <h1>PixelPort</h1>
-        <p class="subtitle">High-fidelity website screenshots with precise control and repeatable output.</p>
+        <div class="hero-title-row">
+          <img class="hero-icon" src="./pixelport-header-icon.png" alt="PixelPort icon" />
+          <div class="hero-title-text">
+            <p class="eyebrow">Artfuldoidger Inc.</p>
+            <h1>PixelPort</h1>
+            <p class="subtitle">High-fidelity website screenshots with precise control and repeatable output.</p>
+          </div>
+        </div>
       </header>
 
       <form id="capture-form">
@@ -100,7 +110,7 @@
             <span id="error-multiSize" class="field-error"></span>
           </div>
 
-          <label class="field">
+          <label class="field output-folder-field">
             <span class="field-title">Output folder</span>
             <div class="folder-picker">
               <button id="choose-folder" type="button">Choose folder</button>

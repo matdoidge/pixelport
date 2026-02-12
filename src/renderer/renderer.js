@@ -40,6 +40,11 @@ const profiles = {
   }
 };
 
+const platform = window.screengrabby.getPlatform ? window.screengrabby.getPlatform() : '';
+if (platform) {
+  document.body.classList.add('platform-' + platform);
+}
+
 const form = document.getElementById('capture-form');
 const urlInput = document.getElementById('url');
 const urlListInput = document.getElementById('url-list');

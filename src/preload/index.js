@@ -14,5 +14,6 @@ contextBridge.exposeInMainWorld('screengrabby', {
     ipcRenderer.on('app-update-status', (_event, data) => handler(data));
   },
   getPreferences: () => ipcRenderer.invoke('preferences-get'),
-  savePreferences: (payload) => ipcRenderer.invoke('preferences-save', payload)
+  savePreferences: (payload) => ipcRenderer.invoke('preferences-save', payload),
+  getPlatform: () => process.platform
 });
