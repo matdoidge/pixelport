@@ -46,6 +46,9 @@ body.platform-darwin .window-titlebar {
   background: linear-gradient(180deg, rgba(9, 18, 34, 0.88), rgba(9, 16, 30, 0.72));
   -webkit-app-region: drag;
   user-select: none;
+  position: sticky;
+  z-index: 1000;
+  top: 0;
 }
 
 .window-title {
@@ -574,6 +577,8 @@ pre {
     transform: rotate(360deg);
   }
 }
+
+
 
 @media (max-width: 840px) {
   body.platform-darwin .window-titlebar {
