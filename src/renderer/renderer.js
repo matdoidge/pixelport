@@ -72,7 +72,9 @@ const appendTimestampInput = document.getElementById('append-timestamp');
 const folderPath = document.getElementById('folder-path');
 const chooseFolderButton = document.getElementById('choose-folder');
 const statusText = document.getElementById('status-text');
+const updateStatusText = document.getElementById('update-status');
 const captureButton = document.getElementById('capture');
+const checkForUpdatesButton = document.getElementById('check-for-updates');
 const openOutputFolderButton = document.getElementById('open-output-folder');
 const revealLastFileButton = document.getElementById('reveal-last-file');
 const captureFeedback = document.getElementById('capture-feedback');
@@ -108,6 +110,10 @@ let lastPreviewPath = '';
 
 function setStatus(message) {
   statusText.textContent = message;
+}
+
+function setUpdateStatus(message) {
+  updateStatusText.textContent = 'Updater: ' + message;
 }
 
 function updateActionButtons() {
@@ -702,8 +708,18 @@ function bindEvents() {
   revealLastFileButton.addEventListener('click', async () => {
     const response = await window.screengrabby.revealFile(lastPreviewPath);
     if (!response.ok) {
-      setStatus(`Could not reveal file: ${response.error}`);
+      setStatus('Could not reveal file: ' + response.error);
     }
+  });
+
+  checkForUpdatesButton.addEventListener('click', async () => {
+    setUpdateStatus('checking for updates...');
+    await window.screengrabby.checkForUpdates();
+  });
+
+  window.screengrabby.onUpdateStatus((data) => {
+    const message = (data && data.message) ? data.message : ((data && data.state) ? data.state : 'update status unavailable');
+    setUpdateStatus(message);
   });
 
   window.screengrabby.onBatchProgress((data) => {

@@ -3,6 +3,9 @@ const fs = require('node:fs/promises');
 const { app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
 const { capturePage, closeCaptureBrowser, warmupCaptureBrowser } = require('../core/capture');
 const { getPreferences, savePreferences } = require('./preferences');
+const { setupAutoUpdater, checkForUpdates } = require('./updater');
+
+let mainWindow;
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -16,6 +19,15 @@ function createWindow() {
   });
 
   win.loadFile(path.join(__dirname, '..', 'renderer', 'index.html'));
+  mainWindow = win;
+
+  win.on('closed', () => {
+    if (mainWindow === win) {
+      mainWindow = undefined;
+    }
+  });
+
+  return win;
 }
 
 function normalizeQueueConcurrency(value) {
@@ -79,6 +91,8 @@ ipcMain.handle('reveal-file', async (_event, filePath) => {
     };
   }
 });
+
+ipcMain.handle('check-for-updates', async () => checkForUpdates(mainWindow));
 
 ipcMain.handle('capture-request', async (_event, payload) => {
   try {
@@ -207,10 +221,16 @@ ipcMain.handle('preferences-save', async (_event, payload) => savePreferences(pa
 app.whenReady().then(() => {
   createWindow();
   warmupCaptureBrowser().catch(() => {});
+  setupAutoUpdater(mainWindow);
+
+  setTimeout(() => {
+    checkForUpdates(mainWindow).catch(() => {});
+  }, 2500);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow();
+      setupAutoUpdater(mainWindow);
     }
   });
 });

@@ -1,5 +1,5 @@
 {
-  "name": "screengrabby",
+  "name": "pixelport",
   "version": "0.1.0",
   "description": "macOS desktop app for deterministic high-resolution webpage screenshots",
   "main": "src/main/index.js",
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "electron": "^34.2.0",
+    "electron-updater": "^6.3.9",
     "playwright": "^1.52.0",
     "sharp": "^0.34.2"
   },
@@ -19,8 +20,8 @@
     "electron-builder": "^25.1.8"
   },
   "build": {
-    "appId": "com.screengrabby.app",
-    "productName": "Screengrabby",
+    "appId": "com.pixelport.app",
+    "productName": "PixelPort",
     "directories": {
       "output": "dist"
     },
@@ -28,6 +29,13 @@
       "src/**/*",
       "package.json",
       "README.md"
+    ],
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "matdoidge",
+        "repo": "pixelport"
+      }
     ],
     "mac": {
       "target": [

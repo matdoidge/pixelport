@@ -46,6 +46,7 @@ Last updated: 2026-02-12
 - Enabled multi-size captures in queue mode (URL x preset job expansion).
 - Added capture timing telemetry and surfaced timing metrics in UI status.
 - Added reusable browser-context caching keyed by profile/viewport/scale to improve throughput.
+- Added in-app auto-update foundation (electron-updater) with launch checks and manual check action.
 - Added packaging configuration and scripts for macOS DMG output.
 - Added baseline tests for filename generation utilities.
 - Added README with local run/test instructions and known limitations.
