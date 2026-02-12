@@ -1,6 +1,6 @@
 {
   "name": "pixelport",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "macOS desktop app for deterministic high-resolution webpage screenshots",
   "author": "PixelPort Team",
   "main": "src/main/index.js",
