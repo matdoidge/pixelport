@@ -2,6 +2,7 @@
   "name": "pixelport",
   "version": "0.1.0",
   "description": "macOS desktop app for deterministic high-resolution webpage screenshots",
+  "author": "PixelPort Team",
   "main": "src/main/index.js",
   "type": "commonjs",
   "scripts": {
@@ -11,12 +12,12 @@
     "dist:mac": "electron-builder --mac dmg"
   },
   "dependencies": {
-    "electron": "^34.2.0",
     "electron-updater": "^6.3.9",
     "playwright": "^1.52.0",
     "sharp": "^0.34.2"
   },
   "devDependencies": {
+    "electron": "^34.2.0",
     "electron-builder": "^25.1.8"
   },
   "build": {
@@ -38,6 +39,7 @@
       }
     ],
     "mac": {
+      "icon": "assets/icon/pixelport.icns",
       "target": [
         "dmg"
       ],
