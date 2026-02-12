@@ -1,6 +1,6 @@
 {
   "name": "pixelport",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "macOS desktop app for deterministic high-resolution webpage screenshots",
   "author": "Mat Doidge",
   "main": "src/main/index.js",
