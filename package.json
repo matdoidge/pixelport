@@ -2,7 +2,7 @@
   "name": "pixelport",
   "version": "0.1.1",
   "description": "macOS desktop app for deterministic high-resolution webpage screenshots",
-  "author": "PixelPort Team",
+  "author": "Mat Doidge",
   "main": "src/main/index.js",
   "type": "commonjs",
   "scripts": {
