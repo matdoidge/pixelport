@@ -25,6 +25,7 @@ function fail(message) {
 
 const bumpType = process.argv[2] || 'patch';
 const runTests = !process.argv.includes('--no-test');
+const runElectronPublish = !process.argv.includes('--no-electron-publish');
 const validTypes = new Set(['patch', 'minor', 'major']);
 
 if (!validTypes.has(bumpType)) {
@@ -79,7 +80,11 @@ try {
   run(`git tag ${tag}`);
   run('git push --follow-tags');
 
-  console.log(`Release complete: ${tag}`);
+  if (runElectronPublish) {
+    run('npx electron-builder --mac dmg --publish always');
+  }
+
+  console.log(`Release complete: ${tag}${runElectronPublish ? ' (electron-builder publish complete)' : ''}`);
 } catch (error) {
   fail(error instanceof Error ? error.message : String(error));
 }

@@ -96,14 +96,13 @@ Each shortcut will:
 - commit all current changes with a release message
 - create a git tag (`vX.Y.Z`)
 - push commit and tags
+- build + publish DMG via electron-builder (`npx electron-builder --mac dmg --publish always`)
 
-Then build and upload artifacts:
+If you only want version bump/commit/tag/push (without publish):
 
 ```bash
-npm run dist:mac
+npm run release -- patch --no-electron-publish
 ```
-
-Upload generated artifacts from `dist/` to your publish location, including update metadata files.
 
 ### 3. Client update behavior
 

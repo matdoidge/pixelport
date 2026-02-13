@@ -369,6 +369,11 @@ function updateCaptureTypeState() {
   const isQueue = captureTypeSelect.value === 'queue';
   singleUrlField.classList.toggle('hidden', isQueue);
   queueUrlField.classList.toggle('hidden', !isQueue);
+
+  // Avoid native form blocking when the hidden input still has required=true.
+  urlInput.required = !isQueue;
+  urlListInput.required = isQueue;
+
   updateMultiSizeState();
   captureButton.textContent = isQueue ? 'Capture Queue' : 'Capture Screenshot';
 }
