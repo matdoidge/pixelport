@@ -15,5 +15,6 @@ contextBridge.exposeInMainWorld('screengrabby', {
   },
   getPreferences: () => ipcRenderer.invoke('preferences-get'),
   savePreferences: (payload) => ipcRenderer.invoke('preferences-save', payload),
+  exportFigmaBundle: (payload) => ipcRenderer.invoke('export-figma-bundle', payload),
   getPlatform: () => process.platform
 });

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PixelPort Importer</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b1020;
+        --panel: #111a31;
+        --line: #25355c;
+        --text: #edf2ff;
+        --muted: #9fb0d7;
+        --accent: #39b7ff;
+        --accent2: #ff5ed5;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 16px;
+        font: 13px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: radial-gradient(420px 260px at 10% -10%, rgba(61, 15, 93, 0.4), transparent 70%), var(--bg);
+        color: var(--text);
+      }
+
+      .panel {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        padding: 14px;
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: 16px;
+      }
+
+      p {
+        margin: 0 0 10px;
+        color: var(--muted);
+      }
+
+      input[type='file'] {
+        width: 100%;
+        margin: 8px 0 10px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      button {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 9px 11px;
+        color: var(--text);
+        background: #162447;
+        cursor: pointer;
+      }
+
+      button.primary {
+        border-color: #6f5dff;
+        background: linear-gradient(120deg, var(--accent), #6e79ff 48%, var(--accent2));
+        color: #fff;
+        font-weight: 600;
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .status {
+        margin-top: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #0b1630;
+        padding: 10px;
+        white-space: pre-wrap;
+        color: #bcd6ff;
+        min-height: 74px;
+      }
+
+      code {
+        color: #d6e6ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="panel">
+      <h1>PixelPort Bundle Importer</h1>
+      <p>Select the exported PixelPort bundle folder (it contains <code>manifest.json</code> and a <code>tiles/</code> folder).</p>
+      <input id="bundle-files" type="file" webkitdirectory directory multiple />
+
+      <div class="actions">
+        <button id="import" class="primary" disabled>Import Bundle</button>
+        <button id="cancel">Cancel</button>
+      </div>
+
+      <div id="status" class="status">Waiting for bundle selection.</div>
+    </div>
+
+    <script src="./ui.js"></script>
+  </body>
+</html>

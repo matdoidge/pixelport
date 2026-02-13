@@ -7,7 +7,7 @@ PixelPort is a macOS desktop app for deterministic webpage screenshots with expl
 - Single URL capture and queue mode (multiple URLs in one run)
 - Profiles: `Fast`, `Balanced`, `Ultra`
 - Capture modes: above-the-fold and full-page
-- Output formats: JPG and WebP
+- Output formats: JPG, PNG, and WebP
 - Quality, scale, timeout, wait strategy, and post-load delay controls
 - Cookie banner handling: off, hide common banners, or attempt accept-then-hide
 - Animation suppression and consistency mode for repeatable outputs
@@ -82,11 +82,28 @@ Replace this URL with your real update feed location.
 
 ### 2. Publish release artifacts
 
-For each app version:
+Fast release shortcuts (recommended):
 
-1. Bump `version` in `package.json`
-2. Build DMG using `npm run dist:mac`
-3. Upload generated artifacts from `dist/` to your publish location, including the generated update metadata file(s)
+```bash
+npm run release:patch
+# or: npm run release:minor
+# or: npm run release:major
+```
+
+Each shortcut will:
+- run tests
+- bump version
+- commit all current changes with a release message
+- create a git tag (`vX.Y.Z`)
+- push commit and tags
+
+Then build and upload artifacts:
+
+```bash
+npm run dist:mac
+```
+
+Upload generated artifacts from `dist/` to your publish location, including update metadata files.
 
 ### 3. Client update behavior
 
@@ -94,6 +111,17 @@ For each app version:
 - Status appears in the app status panel
 - Manual check is available via `Check for Updates`
 - Downloaded updates are installed on app restart/quit
+
+## Figma workflow
+
+1. Capture any screenshot in PixelPort.
+2. Click `Send to Figma` in the Status panel.
+3. PixelPort exports a tiled bundle (`manifest.json` + `tiles/*.png`) and opens the bundle folder.
+4. In Figma desktop, import and run `figma-plugin/pixelport-importer` to reassemble the full image in a frame.
+
+Plugin quick start:
+- `Plugins` -> `Development` -> `Import plugin from manifest...`
+- Choose `figma-plugin/pixelport-importer/manifest.json`
 
 ## Output naming
 

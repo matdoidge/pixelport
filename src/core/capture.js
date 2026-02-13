@@ -247,7 +247,7 @@ async function capturePage(rawPayload) {
 
   await fs.mkdir(input.outputDir, { recursive: true });
 
-  const extension = input.format === 'webp' ? 'webp' : 'jpg';
+  const extension = input.format;
   const outputFilename = buildOutputFilename({
     url: input.url,
     width: input.width,
@@ -334,6 +334,21 @@ async function capturePage(rawPayload) {
       const encodeStart = performance.now();
       await fs.writeFile(outputPath, jpegBuffer);
       const metadata = await sharp(jpegBuffer).metadata();
+      pixelWidth = metadata.width;
+      pixelHeight = metadata.height;
+      encodeMs = performance.now() - encodeStart;
+    } else if (input.format === 'png') {
+      const screenshotStart = performance.now();
+      const pngBuffer = await page.screenshot({
+        type: 'png',
+        fullPage,
+        omitBackground: false
+      });
+      screenshotMs = performance.now() - screenshotStart;
+
+      const encodeStart = performance.now();
+      await fs.writeFile(outputPath, pngBuffer);
+      const metadata = await sharp(pngBuffer).metadata();
       pixelWidth = metadata.width;
       pixelHeight = metadata.height;
       encodeMs = performance.now() - encodeStart;

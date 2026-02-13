@@ -2,6 +2,7 @@ const path = require('node:path');
 const fs = require('node:fs/promises');
 const { app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
 const { capturePage, closeCaptureBrowser, warmupCaptureBrowser } = require('../core/capture');
+const { exportFigmaBundle } = require('../core/figmaBundle');
 const { getPreferences, savePreferences } = require('./preferences');
 const { setupAutoUpdater, checkForUpdates } = require('./updater');
 
@@ -214,6 +215,17 @@ ipcMain.handle('capture-batch-request', async (event, payload) => {
     },
     results
   };
+});
+
+ipcMain.handle('export-figma-bundle', async (_event, payload) => {
+  try {
+    return await exportFigmaBundle(payload || {});
+  } catch (error) {
+    return {
+      ok: false,
+      error: error instanceof Error ? error.message : String(error)
+    };
+  }
 });
 
 ipcMain.handle('preferences-get', async () => getPreferences());

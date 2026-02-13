@@ -82,6 +82,7 @@ const captureButton = document.getElementById('capture');
 const checkForUpdatesButton = document.getElementById('check-for-updates');
 const openOutputFolderButton = document.getElementById('open-output-folder');
 const revealLastFileButton = document.getElementById('reveal-last-file');
+const sendToFigmaButton = document.getElementById('send-to-figma');
 const captureFeedback = document.getElementById('capture-feedback');
 const captureFeedbackText = document.getElementById('capture-feedback-text');
 const captureProgressTrack = document.getElementById('capture-progress-track');
@@ -124,6 +125,7 @@ function setUpdateStatus(message) {
 function updateActionButtons() {
   openOutputFolderButton.disabled = !selectedOutputDir;
   revealLastFileButton.disabled = !lastPreviewPath;
+  sendToFigmaButton.disabled = !lastPreviewPath || !selectedOutputDir;
 }
 
 function setProgress(value) {
@@ -543,7 +545,7 @@ function applyPreferences(settings) {
     modeSelect.value = settings.mode;
   }
 
-  if (['jpg', 'webp'].includes(settings.format)) {
+  if (['jpg', 'png', 'webp'].includes(settings.format)) {
     formatSelect.value = settings.format;
   }
 
@@ -715,6 +717,39 @@ function bindEvents() {
     if (!response.ok) {
       setStatus('Could not reveal file: ' + response.error);
     }
+  });
+
+  sendToFigmaButton.addEventListener('click', async () => {
+    if (!lastPreviewPath) {
+      setStatus('Capture an image first, then send it to Figma.');
+      return;
+    }
+
+    setStatus('Preparing Figma bundle...');
+
+    const result = await window.screengrabby.exportFigmaBundle({
+      imagePath: lastPreviewPath,
+      outputDir: selectedOutputDir
+    });
+
+    if (!result.ok) {
+      setStatus('Could not prepare Figma bundle: ' + result.error);
+      return;
+    }
+
+    const openResponse = await window.screengrabby.openOutputFolder(result.bundleDir);
+    const openMessage = openResponse.ok
+      ? 'Opened bundle folder for import.'
+      : 'Bundle folder saved but could not be opened automatically.';
+
+    setStatus([
+      'Figma bundle ready.',
+      'Manifest: ' + result.manifestPath,
+      'Frame size: ' + result.width + 'x' + result.height + 'px',
+      'Tiles: ' + result.tileCount + ' (' + result.columns + ' cols x ' + result.rows + ' rows @ ' + result.tileSize + 'px)',
+      openMessage,
+      'Next: use the PixelPort Figma importer plugin and choose this bundle folder.'
+    ].join('\n'));
   });
 
   checkForUpdatesButton.addEventListener('click', async () => {

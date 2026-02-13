@@ -31,7 +31,7 @@ function toPositiveInt(value, label) {
 
 function normalizeCaptureInput(payload) {
   const mode = payload.mode === 'full' ? 'full' : 'fold';
-  const format = payload.format === 'webp' ? 'webp' : 'jpg';
+  const format = ['jpg', 'png', 'webp'].includes(payload.format) ? payload.format : 'jpg';
   const waitUntil = payload.waitUntil === 'networkidle' ? 'networkidle' : 'domcontentloaded';
   const scale = [1, 2, 3].includes(Number(payload.scale)) ? Number(payload.scale) : 2;
   const cookieHandling = ['off', 'hide', 'accept'].includes(payload.cookieHandling) ? payload.cookieHandling : 'hide';
